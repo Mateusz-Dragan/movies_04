@@ -5,17 +5,10 @@ import pl.edu.pwsztar.domain.dto.DetailsMovieDto;
 import pl.edu.pwsztar.domain.entity.Movie;
 
 @Component
-public class MovieDetailsMapper {
+public class MovieDetailsMapper implements Converter<DetailsMovieDto, Movie>{
 
-    public DetailsMovieDto mapToDto(Movie movie) {
-        DetailsMovieDto detailsMovieDto = new DetailsMovieDto();
-
-        detailsMovieDto.setTitle(movie.getTitle());
-        detailsMovieDto.setVideoId(movie.getVideoId());
-        detailsMovieDto.setImage(movie.getImage());
-        detailsMovieDto.setYear(movie.getYear());
-
-        return detailsMovieDto;
+    @Override
+    public DetailsMovieDto convert(Movie movie) {
+        return new DetailsMovieDto.Builder().title(movie.getTitle()).videoId(movie.getVideoId()).image(movie.getImage()).year(movie.getYear()).build();
     }
-
 }

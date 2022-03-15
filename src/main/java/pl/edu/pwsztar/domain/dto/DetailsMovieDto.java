@@ -6,7 +6,11 @@ public class DetailsMovieDto {
     private String image;
     private Integer year;
 
-    public DetailsMovieDto() {
+    public DetailsMovieDto(Builder builder) {
+        title = builder.title;
+        image = builder.image;
+        year = builder.year;
+        videoId = builder.videoId;
     }
 
     public void setTitle(String title) {
@@ -47,5 +51,39 @@ public class DetailsMovieDto {
                 "title='" + title + '\'' +
                 ", videoId='" + videoId + '\'' +
                 '}';
+    }
+
+    public static final class Builder {
+        private String title;
+        private String image;
+        private Integer year;
+        private String videoId;
+
+        public Builder() {
+        }
+
+        public Builder title(String title) {
+            this.title = title;
+            return this;
+        }
+
+        public Builder image(String image) {
+            this.image = image;
+            return this;
+        }
+
+        public Builder year(Integer year) {
+            this.year = year;
+            return this;
+        }
+
+        public Builder videoId(String videoId) {
+            this.videoId = videoId;
+            return this;
+        }
+
+        public DetailsMovieDto build() {
+            return new DetailsMovieDto(this);
+        }
     }
 }

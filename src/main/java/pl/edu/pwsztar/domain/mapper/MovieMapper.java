@@ -5,17 +5,16 @@ import pl.edu.pwsztar.domain.dto.CreateMovieDto;
 import pl.edu.pwsztar.domain.entity.Movie;
 
 @Component
-public class MovieMapper {
+public class MovieMapper implements Converter<Movie, CreateMovieDto>{
 
-    public Movie mapToEntity(CreateMovieDto createMovieDto) {
-        Movie movie = new Movie();
 
-        movie.setImage(createMovieDto.getImage());
-        movie.setTitle(createMovieDto.getTitle());
-        movie.setYear(createMovieDto.getYear());
-        movie.setVideoId(createMovieDto.getVideoId());
-
-        return movie;
+    @Override
+    public Movie convert(CreateMovieDto createMovieDto) {
+        return new Movie.Builder()
+            .image(createMovieDto.getImage())
+            .title(createMovieDto.getTitle())
+            .year(createMovieDto.getYear())
+            .videoId(createMovieDto.getVideoId())
+            .build();
     }
-
 }

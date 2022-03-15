@@ -39,12 +39,12 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public List<MovieDto> findAll() {
         List<Movie> movies = movieRepository.findByOrderByYearDesc();
-        return movieListMapper.mapToDto(movies);
+        return movieListMapper.convert(movies);
     }
 
     @Override
     public void creatMovie(CreateMovieDto createMovieDto) {
-        Movie movie = movieMapper.mapToEntity(createMovieDto);
+        Movie movie = movieMapper.convert(createMovieDto);
         movieRepository.save(movie);
     }
 
@@ -58,27 +58,30 @@ public class MovieServiceImpl implements MovieService {
         Movie movie = movieRepository.findOneByMovieId(movieId);
 
         if(movie == null) {
-            return new DetailsMovieDto();
+            return new DetailsMovieDto.Builder().build();
         }
 
-        return movieDetailsMapper.mapToDto(movie);
+        return movieDetailsMapper.convert(movie);
     }
 
     @Override
     public MovieCounterDto countMovies() {
-        return new MovieCounterDto(movieRepository.count());
+        return new MovieCounterDto.Builder().counter(movieRepository.count()).build();
     }
 
     @Override
     public void updateMovie(Long movieId, UpdateMovieDto updateMovieDto) {
         Movie movie = movieRepository.findOneByMovieId(movieId);
 
+
         if(movie != null) {
-            movie.setImage(updateMovieDto.getImage());
-            movie.setTitle(updateMovieDto.getTitle());
-            movie.setVideoId(updateMovieDto.getVideoId());
-            movie.setYear(updateMovieDto.getYear());
-            movieRepository.save(movie);
+            Movie movieBuilder = new Movie.Builder()
+                .image(movie.getImage())
+                .title(movie.getTitle())
+                .year(movie.getYear())
+                .videoId(movie.getVideoId())
+                .build();
+            movieRepository.save(movieBuilder);
         }
     }
 }
